@@ -6,7 +6,7 @@ path2results = '../results/behavioral/'
 path2figures = '../figures/perplexities/'
 num_sentences = 100
 sentence_types = ['sv', 'unacc', 'vs', 'which', 'top', 'objrel']
-colors = ['g', 'g', 'b', 'b', 'b', 'r']
+colors = ['g', 'g', 'b', 'b', 'r', 'r']
 
 mean_ppls, std_ppls = [], []
 fig_per_word, axs = plt.subplots(len(sentence_types), 1, figsize=(10, 20))
