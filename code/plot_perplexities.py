@@ -38,6 +38,7 @@ for i_type, sentence_type in enumerate(sentence_types):
     axs[i_type].set_xticklabels(words)
     axs[i_type].legend(loc='upper right')
     axs[i_type].set_ylabel('Cross entropy')
+    axs[i_type].set_ylim([0, 15])
 plt.savefig(os.path.join(path2figures, 'perplexity_by_word.png'))
 
 ##########################
@@ -47,4 +48,5 @@ fig_barplot, ax = plt.subplots()
 barlist = ax.bar(sentence_types, np.log(mean_ppls), yerr=np.log(std_ppls))
 for i, c in enumerate(colors):
     barlist[i].set_color(c)
+ax.set_ylabel('Cross entropy')
 plt.savefig(os.path.join(path2figures, 'perplexity_whole_sentence.png'))
