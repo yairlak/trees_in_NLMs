@@ -19,9 +19,9 @@ if args.sentence_type == 'sv':
     noun_type = 'humans'
     while len(sentences) < args.num_sentences:
         number = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number = 'singular'
+        #number = 'singular'
         gender = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender = 'masculine'
+        #gender = 'masculine'
 
         # NOUN
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number][gender])
@@ -49,9 +49,9 @@ if args.sentence_type == 'unacc':
     verb_type = 'unaccusative'
     while len(sentences) < args.num_sentences:
         number = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number = 'singular'
+        #number = 'singular'
         gender = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender = 'masculine'
+        #gender = 'masculine'
         noun_type = ['humans', 'objects'][int(np.random.randint(2, size=1))]
 
         # NOUN
@@ -79,9 +79,9 @@ if args.sentence_type == 'vs':
     noun_type = 'humans'
     while len(sentences) < args.num_sentences:
         number = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number = 'singular'
+        #number = 'singular'
         gender = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender = 'masculine'
+        #gender = 'masculine'
 
         # NOUN
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number][gender])
@@ -108,9 +108,9 @@ if args.sentence_type == 'which':
     noun_type = 'humans'
     while len(sentences) < args.num_sentences:
         number1 = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number1 = 'singular'
+        #number1 = 'singular'
         gender1 = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender1 = 'masculine'
+        #gender1 = 'masculine'
 
         # NOUN1
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number1][gender1])
@@ -118,9 +118,9 @@ if args.sentence_type == 'which':
         noun1 = hebrew_lexicon['nouns'][noun_type][number1][gender1][IX_noun1]
 
         number2 = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number2 = 'singular'
+        #number2 = 'singular'
         gender2 = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender2 = 'masculine'
+        #gender2 = 'masculine'
 
         # NOUN2
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number2][gender2])
@@ -145,9 +145,9 @@ if args.sentence_type == 'top':
     noun_type = 'humans'
     while len(sentences) < args.num_sentences:
         number1 = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number1 = 'singular'
+        #number1 = 'singular'
         gender1 = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender1 = 'masculine'
+        #gender1 = 'masculine'
 
         # NOUN1
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number1][gender1])
@@ -155,9 +155,9 @@ if args.sentence_type == 'top':
         noun1 = hebrew_lexicon['nouns'][noun_type][number1][gender1][IX_noun1]
 
         number2 = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number2 = 'singular'
+        #number2 = 'singular'
         gender2 = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender2 = 'masculine'
+        #gender2 = 'masculine'
 
         # NOUN2
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number2][gender2])
@@ -183,9 +183,9 @@ if args.sentence_type == 'objrel':
     noun_type = 'humans'
     while len(sentences) < args.num_sentences:
         number1 = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number1 = 'singular'
+        #number1 = 'singular'
         gender1 = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender1 = 'masculine'
+        #gender1 = 'masculine'
 
         # NOUN1
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number1][gender1])
@@ -193,9 +193,9 @@ if args.sentence_type == 'objrel':
         noun1 = hebrew_lexicon['nouns'][noun_type][number1][gender1][IX_noun1]
 
         number2 = ['singular', 'plural'][int(np.random.randint(2, size=1))]
-        number2 = 'singular'
+        #number2 = 'singular'
         gender2 = ['masculine', 'feminine'][int(np.random.randint(2, size=1))]
-        gender2 = 'masculine'
+        #gender2 = 'masculine'
 
         # NOUN2
         num_tokens = len(hebrew_lexicon['nouns'][noun_type][number2][gender2])
