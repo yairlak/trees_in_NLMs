@@ -215,5 +215,5 @@ if args.sentence_type == 'objrel':
         if sentence not in sentences:
             sentences.append(' '.join(sentence))
 
-
-[print(s + ' ' + '.') for s in sentences]
+punctuation = '?' if args.sentence_type in ['which'] else '.'
+[print(s + ' ' + punctuation) for s in sentences]

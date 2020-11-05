@@ -3,6 +3,7 @@ import sys
 import os
 import torch
 import argparse
+import lstm
 #print(os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../word_language_model')))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'word_language_model')))
 import data
@@ -48,43 +49,19 @@ def feed_sentence(model, h, sentence):
 # Vocabulary
 vocab = data.Dictionary(args.vocabulary)
 
-#dir2vocab = os.path.dirname(args.vocabulary)
-#corpus = data.Corpus(dir2vocab)
-#vocab = corpus.dictionary
-#print(vocab)
-#with open(os.path.join(dir2vocab, 'vocab.txt'), 'w') as f:
-#    for item in vocab.idx2word:
-#        f.write("%s\n" % item)
-#raise()
-
-#vocab = data.Dictionary()
-#with open(os.path.join(args.vocabulary), 'r') as f:
-#    vocab.idx2word = f.readlines()
-#    vocab.idx2word = [l.strip() for l in vocab.idx2word]
-#    for (ix, w) in enumerate(vocab.idx2word):
-#        vocab.word2idx[w] = ix
-
 # Sentences
 sentences = [l.rstrip('\n').split(' ') for l in open('../data/stimuli/' + args.task + '.txt', encoding='utf-8')]
-#gold = pandas.read_csv(args.input + '.gold', sep='\t', header=None, names=['verb_pos', 'correct', 'wrong', 'nattr'])
 
 # Load model
 print('Loading models...')
-import lstm
 print('\nmodel: ' + args.model+'\n')
 model = torch.load(args.model, map_location=lambda storage, loc: storage)  # requires GPU model
 model.rnn.flatten_parameters()
 # hack the forward function to send an extra argument containing the model parameters
 model.rnn.forward = lambda input, hidden: lstm.forward(model.rnn, input, hidden)
 model_orig_state = copy.deepcopy(model.state_dict())
-
-log_p_next_word = np.zeros((len(sentences), len(sentences[0])))
-
-print(log_p_next_word.shape)
 model.load_state_dict(model_orig_state)
 stime = time.time()
-
-
 
 if args.lang == 'it':
     init_sentence = " ".join(['Ma altre caratteristiche hanno fatto in modo che si <unk> ugualmente nel contesto della musica indiana ( anche di quella \" classica \" ) . <eos>',
@@ -99,33 +76,26 @@ hidden = model.init_hidden(1)
 #init_out, init_h = feed_sentence(model, hidden, init_sentence.split(" "))
 init_out, init_h = feed_sentence(model, hidden, "<eos>")
 
-# Test: present prefix sentences and calculate probability of target verb.
+##############
+# FEED MODEL #
+##############
+log_p_next_word = np.zeros((len(sentences), len(sentences[0])))
 for i, s in enumerate(tqdm(sentences)):
     #out = None
-    # reinit hidden
     out = init_out[-1]
-
-    hidden = init_h #model.init_hidden(1)
-    # intitialize with end of sentence
-    # inp = Variable(torch.LongTensor([[vocab.word2idx['<eos>']]]))
-    # if args.cuda:
-    #     inp = inp.cuda()
-    # out, hidden = model(inp, hidden)
-    # out = torch.nn.functional.log_softmax(out[0]).unsqueeze(0)
+    hidden = init_h 
     for j, w in enumerate(s):
         if w not in vocab.word2idx and args.use_unk:
             print('Unknown word: ', w)
             w = args.unk_token
+        # store log_p of the next word before presenting it
         log_p_next_word[i, j] = out[0, 0, vocab.word2idx[w]].data.item()
         inp = Variable(torch.LongTensor([[vocab.word2idx[w]]]))
         if args.cuda:
             inp = inp.cuda()
         out, hidden = model(inp, hidden)
         out = torch.nn.functional.log_softmax(out[0]).unsqueeze(0)
-        # Store surprisal of target word
 
-# Score the performance of the model w/o ablation
-#p_difference = np.exp(log_p_targets_correct) - np.exp(log_p_targets_wrong)
 mean_ppl = np.mean(np.exp(-np.mean(log_p_next_word, axis=1)))
 std_ppl = np.std(np.exp(-np.mean(log_p_next_word, axis=1)))
 mean_ppl_per_word = np.exp(-np.mean(log_p_next_word, axis=0))

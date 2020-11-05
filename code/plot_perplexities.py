@@ -33,12 +33,18 @@ for i_type, sentence_type in enumerate(sentence_types):
     num_words = len(words)
     ppls = np.asarray([float(p) for p in ppls])
     stds = np.asarray([float(s) for s in stds])
-    axs[i_type].errorbar(words, np.log(ppls), yerr=np.log(stds), label=fn)
-    #axs[i_type].set_xticks(range(num_words))
-    #axs[i_type].set_xicklabels(words)
-plt.legend(loc='lower right')
+    axs[i_type].errorbar(range(num_words), np.log(ppls), yerr=np.log(stds), label=fn)
+    axs[i_type].set_xticks(range(num_words))
+    axs[i_type].set_xticklabels(words)
+    axs[i_type].legend(loc='upper right')
+    axs[i_type].set_ylabel('Cross entropy')
 plt.savefig(os.path.join(path2figures, 'perplexity_by_word.png'))
 
+##########################
+# BARPLOT FULL SENTENCES #
+##########################
 fig_barplot, ax = plt.subplots()
-ax.bar(sentence_types, np.log(mean_ppls), yerr=np.log(std_ppls))
+barlist = ax.bar(sentence_types, np.log(mean_ppls), yerr=np.log(std_ppls))
+for i, c in enumerate(colors):
+    barlist[i].set_color(c)
 plt.savefig(os.path.join(path2figures, 'perplexity_whole_sentence.png'))
