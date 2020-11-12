@@ -1,1 +1,4 @@
 *.pt
+results/
+code/word_language_model_2020Sep/
+code/logs/

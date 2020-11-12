@@ -20,8 +20,8 @@ parser = argparse.ArgumentParser(
     description='PyTorch PennTreeBank RNN/LSTM Language Model')
 parser.add_argument('--model', type=str, default='../data/trained_models/LSTM/hebrew/hidden650_batch64_dropout0.1_lr20.0.pt')
 parser.add_argument('--task', default = 'sv-100')
-parser.add_argument('--vocabulary', default='../data/trained_models/LSTM/hebrew/vocab.txt')
-parser.add_argument('--path2results', default='../results/behavioral/')
+parser.add_argument('--vocabulary', default='/neurospin/unicog/protocols/LSTMology/growing_trees/data/trained_models/LSTM/hebrew/vocab.txt')
+parser.add_argument('--path2results', default='/neurospin/unicog/protocols/LSTMology/growing_trees/results/behavioral/')
 parser.add_argument('--eos-separator', default='</s>')
 parser.add_argument('--unk-token', default='<unk>')
 parser.add_argument('--use-unk', action='store_true', default=False)
@@ -50,13 +50,13 @@ def feed_sentence(model, h, sentence):
 vocab = data.Dictionary(args.vocabulary)
 
 # Sentences
-sentences = [l.rstrip('\n').split(' ') for l in open('../data/stimuli/' + args.task + '.txt', encoding='utf-8')]
+sentences = [l.rstrip('\n').split(' ') for l in open('/neurospin/unicog/protocols/LSTMology/growing_trees/data/stimuli/' + args.task + '.txt', encoding='utf-8')]
 
 # Load model
 print('Loading models...')
 print('\nmodel: ' + args.model+'\n')
 model = torch.load(args.model, map_location=lambda storage, loc: storage)  # requires GPU model
-model.rnn.flatten_parameters()
+#model.rnn.flatten_parameters()
 # hack the forward function to send an extra argument containing the model parameters
 model.rnn.forward = lambda input, hidden: lstm.forward(model.rnn, input, hidden)
 model_orig_state = copy.deepcopy(model.state_dict())
@@ -102,7 +102,7 @@ std_ppl = np.std(np.exp(-np.mean(log_p_next_word, axis=1)))
 mean_ppl_per_word = np.exp(-np.mean(log_p_next_word, axis=0))
 std_ppl_per_word = np.exp(-np.std(log_p_next_word, axis=0))
 
-fn_ppl = os.path.join(args.path2results, args.task + '.ppl')
+fn_ppl = os.path.join(args.path2results, os.path.basename(args.model) + '_' + args.task + '.ppl')
 with open(fn_ppl, 'w') as f:
     f.write(f'{mean_ppl}, {std_ppl}\n')
     for w, ppl, std in zip(sentences[0], mean_ppl_per_word, std_ppl_per_word):
