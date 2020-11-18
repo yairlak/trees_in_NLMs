@@ -35,7 +35,8 @@ with open(args.input, 'r') as f:
     lines=f.readlines()
     verbs_transitive = [l.strip() for l in lines[0].split(',')]
     verbs_unaccusative = [l.strip() for l in lines[1].split(',')]
-print(verbs_transitive, verbs_unaccusative)
+    verbs_unergative = [l.strip() for l in lines[2].split(',')]
+print(verbs_transitive, verbs_unaccusative, verbs_unergative)
 
 #### Plot verb embeddings
 for embeddings, embeddings_name in zip([embeddings_in, embeddings_out], ['embeddings_in', 'embeddings_out']):
@@ -52,6 +53,8 @@ for embeddings, embeddings_name in zip([embeddings_in, embeddings_out], ['embedd
             color, size, alpha = 'b', 18, 1
         elif word in verbs_unaccusative:
             color, size, alpha = 'r', 18, 1
+        elif word in verbs_unergative:
+            color, size, alpha = 'g', 18, 1
         else:
             color, size, alpha = 'k', 8, 0.1
 
